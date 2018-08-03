@@ -51,7 +51,6 @@ In this case, it is not possible to pass environment variables; only parameters 
 
 Due to the size of a multi-user Eclipse Che installation, Minishift is not recommended as the base for this configuration.  If you have to use Minishift, start it with at least 4GB of memory by including the `--memory=4096` parameter, and [update Minishift](https://docs.openshift.org/latest/minishift/getting-started/updating.html) to the latest version.
 
-
 ```bash
 $ oc new-project che
 $ oc new-app -f multi/postgres-template.yaml
@@ -61,12 +60,10 @@ $ oc new-app -f che-server-template.yaml -p ROUTING_SUFFIX=$(minishift ip).nip.i
 $ oc set volume dc/che --add -m /data --name=che-data-volume --claim-name=che-data-volume
 ```
 
-## Using OpenShift Container Platform to deploy Che 
 
 **HTTP Setup**
 
 ```bash
-$ oc new-project che
 $ oc new-app -f multi/postgres-template.yaml
 $ oc new-app -f multi/keycloak-template.yaml -p ROUTING_SUFFIX=${ROUTING_SUFFIX}
 $ oc apply -f pvc/che-server-pvc.yaml
