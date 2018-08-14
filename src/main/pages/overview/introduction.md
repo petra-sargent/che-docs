@@ -9,63 +9,58 @@ summary: Eclipse Che is a developer workspace server and cloud IDE
 
 ---
 
-## Introduction
-Eclipse Che provides:
-- Workspaces that include runtimes and IDEs
-- RESTful workspace server
-- A browser-based IDE
-- Plugins for languages, framework, and tools
-- An SDK for creating plugins and assemblies
+## Introducing Eclipse Che
+Eclipse Che is a browser based IDE that uses a workspace model. Workspaces include an IDE, project files, and runtimes. Che provides a large number of plugins for many programming languages, frameworks, and source control tools. Che also provides a SDK for authoring new extenstions, packaging extensions into plug-ins, and grouping plug-ins into an assembly.
 
-## Getting Started
-You can get started with Che by:
-- [Quick start guide][quick-start]
-- Installing it on Docker: [Single-user][docker-single-user] or [Multi-user][docker-multi-user]
-- Installing it on OpenShift: [Single-user][openshift-single-user] or [Multi-user][openshift-multi-user]
-- [Creating a hosted SaaS account](https://www.eclipse.org/che/docs/setup/getting-started-saas-cloud/index.html)
-
-## Single and Multi-User Flavors
-
+### Modes Supported in Eclipse Che
 Eclipse Che is available in two different modes:
-- **Single-user**: perfectly suited for personal desktop environment.
-- **Multi-user**: secure and best for organization and developer teams.
+- **Single-user**: This is best suited for personal desktop environments.
+- **Multi-user**: This is an advanced setup for Che and is best suited for organizations and developer teams.
 
-Learn more about single and multi-user flavors on the following [page][single-multi-user].
+See [Single and Multi-User][single-multi-user] to learn more.
 
-Considering the `multi-user` mode as an advanced setup of Eclipe Che, the quick starts are covering only the `single-user` mode. If you are interested by the `multi-user`, please read the following pages:
-- [Multi-user configuration on Docker][docker-multi-user]
-- [Multi-user configuration on OpenShift][openshift-multi-user]
-
-## Docker and OpenShift Support
-
-Eclipse Che runs on different kind of infrastructure and container engine:
-- [Docker][infra-support]
-- [OpenShift][infra-support]
+### Platforms Supported in Eclipse Che
+Eclipse Che runs on different platforms:
+- Docker
+- OpenShift
 - Kubernetes (soon)
 
-Learn more about the different infrastructure supported by Eclipse Che on the following [page][infra-support].
+See [Infrastructures supported in Eclipse Che][infra-support] to learn more.
 
-## Workspace Model
+## Getting Started with Eclipse Che
+You can get started with Che by:
+- Installing it on Docker in either [Single-user][docker-single-user] or [Multi-user][docker-multi-user] mode
+- Installing it on OpenShift in either [Single-user][openshift-single-user] or [Multi-user][openshift-multi-user] mode
+- Creating a hosted SaaS account
+
+See the [Quick Start Guide][quick-start] to quickly install Che in the single user mode.
+
+
+## Understanding Che''s Workspace Model
+
+Che defines a workspace as the project code files and all of their dependencies necessary to edit, build, run, and debug. The IDE and the development runtime are treated as a dependency of the workspace. These items are embedded and included with the workspace. In the past, workspaces include the project code, but the developer binds the IDE and uses the localhost to provide a runtime.
 
 {% include image.html file="intro/intro-che-workspace.png" %}
 
-Che defines the workspace to be the project code files and all of their dependencies necessary to edit, build, run, and debug them. In our world, we treat the IDE and the development runtime as a dependency of the workspace. These items are embedded and included with the workspace, whereever it may run. This compares to classic workspace definitions which may include the project code, but require the developer to bind their IDE and use their laptop localhost to provide a runtime.
-
-Each workspace is isolated from one another and is responsible for managing the lifecycle of the components that are contained within it.
-
+A workspace contains one or more runtimes. The default runtime within our workspaces are Docker containers, but these runtimes can be replaced with other types of "machines" that offer different characteristics. We, for example, provide an SSH machine type and will soon provide localhost machines. The advantage of Docker as the runtime type allows users to define the contents of their runtime using Dockerfiles, for which we can then dynamically construct workspace runtimes without the user having to learn a lot of complex Docker syntax.
 {% include image.html file="intro/intro-workspace-runtimes.png" %}
 
-A workspace contains one or more runtimes. The default runtime within our workspaces are Docker containers, but these runtimes can be replaced with other types of "machines" that offer different characteristics. We, for example, provide an SSH machine type and will soon provide localhost machines. The advantage of Docker as the runtime type allows users to define the contents of their runtime using Dockerfiles, for which we can then dynamically construct workspace runtimes without the user having to learn a lot of complex Docker syntax.
 
-{% include image.html file="intro/intro-project-mounted.png" %}
+### Introducing Workspaces and Projects
 
 A workspace can have 0..n projects, with each project mapping to 0..1 remote version control repositories such as git, subversion, or mercurial. Projects are mounted into the workspace, so that they are available both inside of the workspace and also available on long term storage. Each project has a "type", such as "maven", which when selected will activate a series of plugins that alter the behavior of the workspace to accommodate that project type. Projects can have different types and they can also have remodules which are sub-portions of a project that have their own typing and behaviors.
 
+{% include image.html file="intro/intro-project-mounted.png" %}
+
+### Introducing Browser IDE
+
 Each workspace has its own private browser IDE hosted within it. The browser IDE provided by Che is packaged as JavaScript and CSS, but our IDE could be replaced with other IDEs. Since each workspace has its own server runtimes, each workspace can have a customized IDE with different plugins packaged within it.
+
+By default, each workspace also configures its own SSH server.  This allows remote clients and desktop IDEs to SSH mount into the workspace. By SSH mounting, you can let IDEs like IntelliJ or Eclipse work with the projects and runtimes contained within Che.
 
 {% include image.html file="intro/intro-SSH-connect.png" %}
 
-By default, each workspace also configures its own SSH server.  This allows remote clients and desktop IDEs to SSH mount into the workspace. By SSH mounting, you can let IDEs like IntelliJ or Eclipse work with the projects and runtimes contained within Che.
+### Introducing Che Server and Runtimes
 
 Workspaces are hosted in the Che server, which is a lightweight runtime for managing workspaces. A single Che server can manage large volumes of workspaces, which themselves may or may not be running on the same host. Since Che workspace runtimes have their own runtimes, each workspace can be running on the same host or another host, managed by a docker daemon.  The Che server is also a Docker container by default, which itself could be operated by compose or Swarm.
 
@@ -77,6 +72,7 @@ Each workspace is defined with a JSON data model that contains the definition of
 
 Both the Che server and each workspace have their own embedded RESTful APIs. Everything that is done by the user dashboard Web application and the browser IDE is done over RESTful APIs. You can access these APIs using swagger as Swagger configurations are provided within each service. The API set within the server and each workspace dynamically changes based upon the plugins that have been deployed by the admin or the user.
 
+{% include image.html file="intro/intro-share-workspace.png" %}
 
 ## Users  
 Che has three types of users:
